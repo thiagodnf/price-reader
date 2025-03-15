@@ -6,6 +6,9 @@ const sound = new Howl({
 let found = false;
 let total = 0.0;
 
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+console.log(isMobile)
 const coolDown = 2000 // 5s cooldown
 
 let lastClick = Date.now() - coolDown // to start fresh
@@ -68,20 +71,43 @@ function onScanFailure(error) {
 
 // Square QR box with edge size = 70% of the smaller edge of the viewfinder.
 let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
-    let minEdgePercentage = 0.7; // 70%
+    
+    // 70%
+    let minEdgePercentage = 0.7; 
+    
     let minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+    
     let qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
+    
     return {
         width: qrboxSize,
         height: qrboxSize
     };
 }
 
+function getAspectRatio() {
+    // const FOR_MOBILE_ASPECT_RATIO = 4/3;
+    const FOR_MOBILE_ASPECT_RATIO = 16/9;
+    const FOR_DESKTOP_ASPECT_RATIO = 4/3;
+
+    return isMobile ? FOR_MOBILE_ASPECT_RATIO : FOR_DESKTOP_ASPECT_RATIO;
+}
+
 let verbose = false;
 
 let config = {
     fps: 10,
-    qrbox: qrboxFunction
+    qrbox: qrboxFunction,
+    useBarCodeDetectorIfSupported: true,
+    rememberLastUsedCamera: true,
+    aspectRatio: this.getAspectRatio(),
+    showTorchButtonIfSupported: true,
+    showZoomSliderIfSupported: true,
+    defaultZoomValueIfSupported: 1.5,
+    supportedScanTypes: [
+        Html5QrcodeScanType.SCAN_TYPE_CAMERA,
+        Html5QrcodeScanType.SCAN_TYPE_FILE,
+    ]
 }
 
 let html5QrcodeScanner = new Html5QrcodeScanner("reader", config, verbose);

@@ -1,2 +1,2 @@
-# price-reader-simulator
+# Price Reader
  

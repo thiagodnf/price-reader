@@ -66,17 +66,22 @@ function onScanFailure(error) {
     found = false;
 }
 
+// Square QR box with edge size = 70% of the smaller edge of the viewfinder.
+let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
+    let minEdgePercentage = 0.7; // 70%
+    let minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+    let qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
+    return {
+        width: qrboxSize,
+        height: qrboxSize
+    };
+}
+
 let verbose = false;
 
 let config = {
     fps: 10,
-    qrbox: {
-        width: 150,
-        height: 150
-    },
-    supportedScanTypes: [
-        Html5QrcodeScanType.SCAN_TYPE_CAMERA
-    ]
+    qrbox: qrboxFunction
 }
 
 let html5QrcodeScanner = new Html5QrcodeScanner("reader", config, verbose);

@@ -65,13 +65,7 @@ function onScanSuccess(decodedText, decodedResult) {
 }
 
 function onScanFailure(error) {
-
     found = false;
-
-    // handle scan failure, usually better to ignore and keep scanning.
-    // for example:
-    // document.getElementById("output").innerText = ""
-    // document.getElementById("error").innerText = `Code scan error = ${error}`;
 }
 
 let verbose = false;

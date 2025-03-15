@@ -73,8 +73,8 @@ let verbose = false;
 let config = {
     fps: 10,
     qrbox: {
-        width: 250,
-        height: 250
+        width: 150,
+        height: 150
     },
     supportedScanTypes: [
         Html5QrcodeScanType.SCAN_TYPE_CAMERA

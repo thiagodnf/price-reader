@@ -34,10 +34,8 @@ function stringToPrice(strings) {
         hash = (hash * 31 + combinedString.charCodeAt(i)) % 1000000;
     }
 
-    console.log(hash)
-
     // Scale to range [0, 25]
-    const price = (hash % 2500) / 100;
+    const price = 1 + (hash % 2400) / 100;
 
     // Return price rounded to 2 decimal places
     return parseFloat(price.toFixed(2));

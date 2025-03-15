@@ -19,7 +19,7 @@ A fun and interactive price reader simulator designed for kids
 
 ## Questions or Suggestions
 
-Feel free to create a <a href="https://github.com/thiagodnf/price-reader/discussions">discussion</a> as you need
+Feel free to create a <a href="https://github.com/thiagodnf/price-reader/discussions">discussion</a> as you need.
 
 ## Contribute
 

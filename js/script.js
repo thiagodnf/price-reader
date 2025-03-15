@@ -3,7 +3,8 @@ const sound = new Howl({
     html5: true
 });
 
-sound.play();
+let found = false;
+let total = 0.0;
 
 const coolDown = 2000 // 5s cooldown
 
@@ -20,33 +21,52 @@ function checkCoolDown() {
     return !notOver
 }
 
+/**
+ * Converts a list of strings into a price between 0 and 25.
+ */
 function stringToPrice(strings) {
-    /**
-     * Converts a list of strings into a price between 0 and 25.
-     */
+
     let hash = 0;
+
     const combinedString = strings.join('');
+
     for (let i = 0; i < combinedString.length; i++) {
         hash = (hash * 31 + combinedString.charCodeAt(i)) % 1000000;
     }
-    const price = (hash % 2500) / 100; // Scale to range [0, 25]
-    return parseFloat(price.toFixed(2)); // Return price rounded to 2 decimal places
+
+    console.log(hash)
+
+    // Scale to range [0, 25]
+    const price = (hash % 2500) / 100;
+
+    // Return price rounded to 2 decimal places
+    return parseFloat(price.toFixed(2));
 }
 
 function onScanSuccess(decodedText, decodedResult) {
 
+    if (found) return;
+
+    found = true;
+
     if (checkCoolDown()) {
 
         startCoolDown()
-        // handle the scanned code as you like, for example:
-        console.log(`Code matched = ${decodedText}`, decodedResult);
-        document.getElementById("price").innerText = stringToPrice([decodedText]);
-        // document.getElementById("error").innerText = ""
+
+        let price = stringToPrice([decodedText]);
+
+        total = parseFloat((total + price).toFixed(2));
+
+        document.getElementById("price").innerText = price;
+        document.getElementById("total").innerText = total;
+
         sound.play();
     }
 }
 
 function onScanFailure(error) {
+
+    found = false;
 
     // handle scan failure, usually better to ignore and keep scanning.
     // for example:
@@ -56,14 +76,17 @@ function onScanFailure(error) {
 
 let verbose = false;
 
-let options = {
+let config = {
     fps: 10,
     qrbox: {
-        width: 150,
-        height: 150
-    }
+        width: 250,
+        height: 250
+    },
+    supportedScanTypes: [
+        Html5QrcodeScanType.SCAN_TYPE_CAMERA
+    ]
 }
 
-let html5QrcodeScanner = new Html5QrcodeScanner("reader", options, verbose);
+let html5QrcodeScanner = new Html5QrcodeScanner("reader", config, verbose);
 
 html5QrcodeScanner.render(onScanSuccess, onScanFailure);
